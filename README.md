@@ -1,6 +1,6 @@
-# Laravel Populated Factory
+<p align="center"><img alt="Laravel Populated Factory" src="https://i.imgur.com/OEiucXg.png" width="500"></p>
 
-An easy way to generate populated factories for models according to types & names of their columns.
+<p align="center"><b>Laravel Populated Factory</b> provides an easy way to generate populated factories for models according to types & names of their columns.</p>
 
 ## Install
 
