@@ -14,17 +14,21 @@ class FactoryGenerator
 
     const NL = PHP_EOL;
 
+    protected $connection;
+
     protected $guesser;
 
-    protected $connection;
+    protected $columnShouldBeIgnored;
 
     protected $appendFactoryPhpDoc = true;
 
-    public function __construct(FakeValueExpressionGuesser $guesser, Connection $connection)
+    public function __construct(Connection $connection, FakeValueExpressionGuesser $guesser, ColumnShouldBeIgnored $columnShouldBeIgnored)
     {
+        $this->connection = $connection;
+
         $this->guesser = $guesser;
 
-        $this->connection = $connection;
+        $this->columnShouldBeIgnored = $columnShouldBeIgnored;
     }
 
     public function generate(Model $model): string
@@ -44,11 +48,17 @@ class FactoryGenerator
             self::NL, self::TAB, 'return [', self::NL
         ])->pipe(function (Collection $collection) use ($columns) {
             foreach ($columns as $column) {
-                if (! is_null($value = $this->guessValue($column))) {
-                    $collection = $collection->merge([
-                        self::TAB, self::TAB, '\'', $column->getName(), '\' => ', $value, ',', self::NL,
-                    ]);
+                if (($this->columnShouldBeIgnored)($column)) {
+                    continue;
                 }
+
+                if (is_null($value = $this->guessValue($column))) {
+                    continue;
+                }
+
+                $collection = $collection->merge([
+                    self::TAB, self::TAB, '\'', $column->getName(), '\' => ', $value, ',', self::NL,
+                ]);
             }
 
             return $collection;
