@@ -1,0 +1,24 @@
+{
+    "name": "coderello/laravel-populated-factory",
+    "description": "An easy way to generate populated factories.",
+    "keywords": ["laravel", "populated", "factory", "populate", "factories"],
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.2",
+        "laravel/framework": "5.5.*|5.6.*|5.7.*|5.8.*",
+        "doctrine/dbal": "^2.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Coderello\\PopulatedFactory\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Coderello\\PopulatedFactory\\Providers\\PopulatedFactoryServiceProvider"
+            ]
+        }
+    }
+}
