@@ -14,6 +14,8 @@ The package will automatically register itself.
 
 ## Usage
 
+The only thing you need to do in order to generate a populated factory is to execute this command:
+
 ```php
 php artisan make:populated-factory User
 ```
