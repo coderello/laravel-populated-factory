@@ -1,6 +1,0 @@
-site:
-  show: true
-  title: 'Laravel Populated Factory'
-  description: 'An easy way to generate populated factories for models.'
-  package_repository: 'packagist'
-  package_name: 'coderello/laravel-populated-factory'
