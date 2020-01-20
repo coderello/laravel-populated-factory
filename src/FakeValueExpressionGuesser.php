@@ -60,7 +60,7 @@ class FakeValueExpressionGuesser
         switch (true)
         {
             case $this->similar($name, ['password']):
-                return '\'$2y$10$uTDnsRa0h7wLppc8/vB9C.YqsrAZwhjCgLWjcmpbndTmyo1k5tbRC\'';
+                return '$faker->md5';
             case $this->similar($name, ['email', 'emailaddress']):
                 return '$faker->unique()->safeEmail';
             case $this->similar($name, ['name']):
