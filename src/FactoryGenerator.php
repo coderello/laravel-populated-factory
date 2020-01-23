@@ -41,7 +41,7 @@ class FactoryGenerator
             '<?php', self::NL, self::NL, 'use Faker\Generator as Faker;', self::NL,
         ])->when($this->appendFactoryPhpDoc, function (Collection $collection) {
             return $collection->merge([
-                self::NL, '/** @var $factory \Illuminate\Database\Eloquent\Factory */', self::NL,
+                self::NL, '/** @var \Illuminate\Database\Eloquent\Factory $factory */', self::NL,
             ]);
         })->merge([
             self::NL, '$factory->define(\\', get_class($model), '::class, function (Faker $faker) {',
