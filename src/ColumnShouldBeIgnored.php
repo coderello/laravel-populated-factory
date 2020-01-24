@@ -12,6 +12,10 @@ class ColumnShouldBeIgnored
             return true;
         }
 
+        if ($column->getName() === 'deleted_at') {
+            return true;
+        }
+
         return false;
     }
 }
