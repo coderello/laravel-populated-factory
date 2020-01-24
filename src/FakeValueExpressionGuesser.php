@@ -80,7 +80,7 @@ class FakeValueExpressionGuesser
             case $this->similar($name, ['phone', 'number', 'phonenumber']):
                 return '$faker->phoneNumber';
             case $this->similar($name, ['company', 'company_name']):
-                return '$faker->companyName';
+                return '$faker->company';
             case $this->similar($name, ['job', 'jobtitle']):
                 return '$faker->jobTitle';
             case $this->similar($name, ['credit_card', 'creditcardnumber']):
