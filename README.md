@@ -7,7 +7,7 @@
 You can install this package via composer using this command:
 
 ```php
-composer require coderello/laravel-populated-factory
+composer require --dev coderello/laravel-populated-factory
 ```
 
 The package will automatically register itself.
