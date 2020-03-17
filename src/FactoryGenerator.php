@@ -69,9 +69,13 @@ class FactoryGenerator
 
     protected function table(Model $model): Table
     {
-        return $this->connection
-            ->getDoctrineSchemaManager()
-            ->listTableDetails($model->getTable());
+        $schemaManager = $this->connection
+            ->getDoctrineSchemaManager();
+
+        $schemaManager->getDatabasePlatform()
+            ->registerDoctrineTypeMapping('enum', 'string');
+
+        return $schemaManager->listTableDetails($model->getTable());
     }
 
     protected function columns(Table $table): array

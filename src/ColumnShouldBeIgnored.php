@@ -12,6 +12,11 @@ class ColumnShouldBeIgnored
             return true;
         }
 
+        // enum
+        if ($column->getType()->getName() === 'string' && $column->getLength() === 0) {
+            return true;
+        }
+
         if ($column->getName() === 'deleted_at') {
             return true;
         }
