@@ -4,7 +4,6 @@ namespace Coderello\PopulatedFactory;
 
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
-use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
