@@ -14,18 +14,14 @@ class FactoryGenerator
 
     const NL = PHP_EOL;
 
-    protected $connection;
-
     protected $guesser;
 
     protected $columnShouldBeIgnored;
 
     protected $appendFactoryPhpDoc = true;
 
-    public function __construct(Connection $connection, FakeValueExpressionGuesser $guesser, ColumnShouldBeIgnored $columnShouldBeIgnored)
+    public function __construct(FakeValueExpressionGuesser $guesser, ColumnShouldBeIgnored $columnShouldBeIgnored)
     {
-        $this->connection = $connection;
-
         $this->guesser = $guesser;
 
         $this->columnShouldBeIgnored = $columnShouldBeIgnored;
@@ -69,8 +65,9 @@ class FactoryGenerator
 
     protected function table(Model $model): Table
     {
-        $schemaManager = $this->connection
-            ->getDoctrineSchemaManager();
+        $table = $model->getConnection()->getTablePrefix() . $model->getTable();
+
+        $schemaManager = $model->getConnection()->getDoctrineSchemaManager($table);
 
         $schemaManager->getDatabasePlatform()
             ->registerDoctrineTypeMapping('enum', 'string');
