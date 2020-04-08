@@ -71,7 +71,7 @@ class FactoryGenerator
         $schemaManager->getDatabasePlatform()
             ->registerDoctrineTypeMapping('enum', 'string');
 
-        return $schemaManager->listTableDetails($model->getTable());
+        return $schemaManager->listTableDetails($table);
     }
 
     protected function columns(Table $table): array
