@@ -25,34 +25,23 @@ class PopulatedFactoryMake extends Command
     protected $description = 'Make populated factory';
 
     /**
-     * Factory generator instance.
-     *
-     * @var FactoryGenerator
-     */
-    protected $factoryGenerator;
-
-    /**
-     * Create a new command instance.
+     * Execute the console command.
      *
      * @param FactoryGenerator $factoryGenerator
-     */
-    public function __construct(FactoryGenerator $factoryGenerator)
-    {
-        parent::__construct();
-
-        $this->factoryGenerator = $factoryGenerator;
-    }
-
-    /**
-     * Execute the console command.
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(FactoryGenerator $factoryGenerator)
     {
         $modelClass = $this->argument('model');
 
-        $modelClass = Str::startsWith($modelClass, '\\') ? $modelClass : 'App\\'.$modelClass;
+        $appNamespace = trim($this->getLaravel()->getNamespace(), '\\');
+
+        if (! Str::startsWith($modelClass, '\\')) {
+            $modelClass = class_exists($appNamespace.'\\Models\\'.$modelClass)
+                ? $appNamespace.'\\Models\\'.$modelClass
+                : $appNamespace.'\\'.$modelClass;
+        }
 
         if (! class_exists($modelClass)) {
             $this->error(
@@ -72,7 +61,7 @@ class PopulatedFactoryMake extends Command
             return;
         }
 
-        $modelName = last(explode('\\', $modelClass));
+        $modelName = class_basename($model);
 
         $factoryName = $this->argument('name') ?? $modelName.'Factory';
 
@@ -88,7 +77,7 @@ class PopulatedFactoryMake extends Command
             return;
         }
 
-        $factoryContent = $this->factoryGenerator->generate($model);
+        $factoryContent = $factoryGenerator->generate($model);
 
         File::put($factoryPath, $factoryContent);
 

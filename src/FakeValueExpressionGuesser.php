@@ -62,69 +62,69 @@ class FakeValueExpressionGuesser
             case $this->similar($name, ['password']):
                 return '\'$2y$10$uTDnsRa0h7wLppc8/vB9C.YqsrAZwhjCgLWjcmpbndTmyo1k5tbRC\'';
             case $this->similar($name, ['email', 'emailaddress']):
-                return '$faker->unique()->safeEmail';
+                return '$this->faker->unique()->safeEmail';
             case $this->similar($name, ['name']):
-                return '$faker->name';
+                return '$this->faker->name';
             case $this->similar($name, ['firstname']):
-                return '$faker->firstName';
+                return '$this->faker->firstName';
             case $this->similar($name, ['lastname']):
-                return '$faker->lastName';
+                return '$this->faker->lastName';
             case $this->similar($name, ['address', 'streetaddress']):
-                return '$faker->streetAddress';
+                return '$this->faker->streetAddress';
             case $this->similar($name, ['city']):
-                return '$faker->city';
+                return '$this->faker->city';
             case $this->similar($name, ['postcode', 'postalcode']):
-                return '$faker->postcode';
+                return '$this->faker->postcode';
             case $this->similar($name, ['country']):
-                return '$faker->country';
+                return '$this->faker->country';
             case $this->similar($name, ['phone', 'number', 'phonenumber']):
-                return '$faker->phoneNumber';
+                return '$this->faker->phoneNumber';
             case $this->similar($name, ['company', 'company_name']):
-                return '$faker->company';
+                return '$this->faker->company';
             case $this->similar($name, ['job', 'jobtitle']):
-                return '$faker->jobTitle';
+                return '$this->faker->jobTitle';
             case $this->similar($name, ['credit_card', 'creditcardnumber']):
-                return '$faker->creditCardNumber';
+                return '$this->faker->creditCardNumber';
             case $this->similar($name, ['creditcardexpirationdate', 'expirationdate']):
-                return '$faker->creditCardExpirationDateString';
+                return '$this->faker->creditCardExpirationDateString';
             case $this->similar($name, ['username', 'nickname']):
-                return '$faker->userName';
+                return '$this->faker->userName';
             case $this->similar($name, ['domain', 'domainname']):
-                return '$faker->domainName';
+                return '$this->faker->domainName';
             case $this->similar($name, ['tld']):
-                return '$faker->tld';
+                return '$this->faker->tld';
             case $this->similar($name, ['url', 'link', 'uri', 'externallink', 'externalurl']):
-                return '$faker->url';
+                return '$this->faker->url';
             case $this->similar($name, ['slug']):
-                return '$faker->slug';
+                return '$this->faker->slug';
             case $this->similar($name, ['ip']):
-                return '$faker->ipv4';
+                return '$this->faker->ipv4';
             case $this->similar($name, ['mac', 'macaddress']):
-                return '$faker->macAddress';
+                return '$this->faker->macAddress';
             case $this->similar($name, ['timezone']):
-                return '$faker->timezone';
+                return '$this->faker->timezone';
             case $this->similar($name, ['countrycode']):
-                return '$faker->countryCode';
+                return '$this->faker->countryCode';
             case $this->similar($name, ['languagecode', 'language', 'locale']):
-                return '$faker->languageCode';
+                return '$this->faker->languageCode';
             case $this->similar($name, ['currencycode', 'currency']):
-                return '$faker->currencyCode';
+                return '$this->faker->currencyCode';
             case $this->similar($name, ['useragent']):
-                return '$faker->userAgent';
+                return '$this->faker->userAgent';
             case $this->similar($name, ['uuid']):
-                return '$faker->uuid';
+                return '$this->faker->uuid';
             case $this->similar($name, ['mime', 'mimetype']):
-                return '$faker->mimeType';
+                return '$this->faker->mimeType';
             case $this->similar($name, ['image', 'imagepath', 'img']):
-                return '$faker->image';
+                return '$this->faker->image';
             case $this->similar($name, ['html']):
-                return '$faker->randomHtml';
+                return '$this->faker->randomHtml';
             case $this->similar($name, ['hex', 'color']):
-                return '$faker->hexColor';
+                return '$this->faker->hexColor';
             case Str::contains($name, 'token'):
-                return '$faker->sha1';
+                return '$this->faker->sha1';
             default:
-                return '$faker->text('.((int) (($column->getLength() ?? 200) / 4)).')';
+                return '$this->faker->text('.((int) (($column->getLength() ?? 200) / 4)).')';
         }
     }
 
@@ -135,7 +135,7 @@ class FakeValueExpressionGuesser
 
     protected function guessForBoolean(Column $column)
     {
-        return '$faker->boolean(50)';
+        return '$this->faker->boolean(50)';
     }
 
     protected function guessForDatetime(Column $column)
@@ -145,11 +145,11 @@ class FakeValueExpressionGuesser
         switch (true)
         {
             case $this->similar($name, ['expiration_date']):
-                return '$faker->dateTimeBetween(\'+1 year\', \'+5 years\')';
+                return '$this->faker->dateTimeBetween(\'+1 year\', \'+5 years\')';
             case $this->similar($name, ['birth', 'born_at', 'birthday', 'date_of_birth']):
-                return '$faker->dateTimeBetween(\'-60 years\', \'-1 year\')';
+                return '$this->faker->dateTimeBetween(\'-60 years\', \'-1 year\')';
             default:
-                return '$faker->dateTime';
+                return '$this->faker->dateTime';
         }
     }
 
@@ -165,11 +165,11 @@ class FakeValueExpressionGuesser
         switch (true)
         {
             case $this->similar($name, ['lat', 'latitude']):
-                return '$faker->latitude';
+                return '$this->faker->latitude';
             case $this->similar($name, ['lon', 'lng', 'longitude']):
-                return '$faker->longitude';
+                return '$this->faker->longitude';
             default:
-                return '$faker->randomFloat';
+                return '$this->faker->randomFloat';
         }
     }
 
@@ -181,19 +181,19 @@ class FakeValueExpressionGuesser
     protected function guessForSmallint(Column $column)
     {
         if ($column->getUnsigned()) {
-            return '$faker->numberBetween(0, 65535)';
+            return '$this->faker->numberBetween(0, 65535)';
         }
 
-        return '$faker->numberBetween(-32768, 32767)';
+        return '$this->faker->numberBetween(-32768, 32767)';
     }
 
     protected function guessForInteger(Column $column)
     {
         if ($column->getUnsigned()) {
-            return '$faker->numberBetween(0, 4294967295)';
+            return '$this->faker->numberBetween(0, 4294967295)';
         }
 
-        return '$faker->numberBetween(-2147483648, 2147483647)';
+        return '$this->faker->numberBetween(-2147483648, 2147483647)';
     }
 
     protected function guessForBigint(Column $column)

@@ -14,18 +14,14 @@ class FactoryGenerator
 
     const NL = PHP_EOL;
 
-    protected $connection;
-
     protected $guesser;
 
     protected $columnShouldBeIgnored;
 
     protected $appendFactoryPhpDoc = true;
 
-    public function __construct(Connection $connection, FakeValueExpressionGuesser $guesser, ColumnShouldBeIgnored $columnShouldBeIgnored)
+    public function __construct(FakeValueExpressionGuesser $guesser, ColumnShouldBeIgnored $columnShouldBeIgnored)
     {
-        $this->connection = $connection;
-
         $this->guesser = $guesser;
 
         $this->columnShouldBeIgnored = $columnShouldBeIgnored;
@@ -37,39 +33,61 @@ class FactoryGenerator
 
         $columns = $this->columns($table);
 
-        return collect([
-            '<?php', self::NL, self::NL, 'use Faker\Generator as Faker;', self::NL,
-        ])->when($this->appendFactoryPhpDoc, function (Collection $collection) {
-            return $collection->merge([
-                self::NL, '/** @var \Illuminate\Database\Eloquent\Factory $factory */', self::NL,
-            ]);
-        })->merge([
-            self::NL, '$factory->define(\\', get_class($model), '::class, function (Faker $faker) {',
-            self::NL, self::TAB, 'return [', self::NL
-        ])->pipe(function (Collection $collection) use ($columns) {
-            foreach ($columns as $column) {
+        $modelNamespace = get_class($model);
+
+        $modelClassName = class_basename($model);
+
+        $definition = collect($columns)
+            ->map(function (Column $column) {
                 if (($this->columnShouldBeIgnored)($column)) {
-                    continue;
+                    return null;
                 }
 
                 if (is_null($value = $this->guessValue($column))) {
-                    continue;
+                    return null;
                 }
 
-                $collection = $collection->merge([
-                    self::TAB, self::TAB, '\'', $column->getName(), '\' => ', $value, ',', self::NL,
-                ]);
-            }
+                return str_repeat(self::TAB, 3).'\''.$column->getName().'\' => '.$value.',';
+            })
+            ->filter()
+            ->implode(self::NL);
 
-            return $collection;
-        })->merge([
-            self::TAB, '];', self::NL, '});', self::NL,
-        ])->implode('');
+        return <<<FACTORY
+<?php
+
+namespace Database\Factories;
+
+use {$modelNamespace};
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
+class {$modelClassName}Factory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected \$model = {$modelClassName}::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+{$definition}
+        ];
+    }
+}
+FACTORY;
     }
 
     protected function table(Model $model): Table
     {
-        $schemaManager = $this->connection
+        $schemaManager = $model->getConnection()
             ->getDoctrineSchemaManager();
 
         $schemaManager->getDatabasePlatform()
@@ -78,6 +96,10 @@ class FactoryGenerator
         return $schemaManager->listTableDetails($model->getTable());
     }
 
+    /**
+     * @param Table $table
+     * @return Column[]|array
+     */
     protected function columns(Table $table): array
     {
         return $table->getColumns();
